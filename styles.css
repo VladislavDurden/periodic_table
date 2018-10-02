@@ -1,0 +1,194 @@
+body {
+    font-size: calc(12px + 0.8vw);
+}
+
+.bg {
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+    height: 100%;
+    width: 99.4%;
+    background-image: url(bg.jpg);
+    background-size: contain;
+    opacity: 0.35;
+    margin-top: -20px;
+    padding-bottom: 2%;
+}
+
+h1 {
+    text-align: center;
+    margin: 0;
+}
+
+.periodic {
+    column-width: 3.5em;
+    padding: 0;
+    list-style: decimal;
+}
+
+.element {
+    margin-left: 2.5em;
+}
+
+
+@media (min-width: 300px) {
+
+    .periodic {
+        column-count: auto;
+        display: grid;
+        grid-template-columns: repeat(32, 1fr);
+        grid-auto-rows: 1fr;
+        padding: 0;
+        list-style: none;
+        --lanthan-label-row: 8;
+        --lanthan-row: 9;
+        --actin-label-row: 10;
+        --actin-row: 11;
+    }
+
+    .element {
+        border: 2px solid #2d2d2d;
+        border-radius: 10px;
+        margin: 0 1px 1px 0;
+        text-align: right;
+        line-height: 1;
+        counter-increment: el;
+        padding: .2em;
+        font-family: fantasy;
+    }
+
+    .element::before {
+        content: counter(el);
+        font-size: calc(1em - .3vw);
+        text-align: left;
+        display: block;
+        color: #3f3f3f;
+    }
+
+    /* благородные газы всегда в последней колонке */
+    .element:nth-child(2) {
+        grid-column: -2;
+    }
+    .element:nth-child(2+8n):nth-child(-n + 118) {
+        background-color: #c351ad;
+    }
+
+    /* элементы третьей группы (5 и 13) всегда в 6-й с конца колонке */
+    .element:nth-child(-8n + 13) {
+        grid-column: -7;
+    }
+
+    /* титан и цирконий (а потом гафний, и резерфордий) — 15-е с конца  */
+    /* можно было бы записать как (-18n + 40), но пришлось бы отдельно исключать элемент 4 */
+    .element:nth-child(22),
+    .element:nth-child(40) {
+        grid-column: -16;
+    }
+
+    /* выделим лантаноиды и актиноиды */
+    .element:nth-child(n + 57):nth-child(-n + 71) {
+        background-color: #c351ad;
+    }
+    .element:nth-child(n + 89):nth-child(-n + 103) {
+        background-color: #e37d8d;
+    }
+    .element:nth-child(n + 21):nth-child(-n + 30),
+    .element:nth-child(n + 39):nth-child(-n + 48),
+    .element:nth-child(n + 72):nth-child(-n + 80),
+    .element:nth-child(n + 104):nth-child(-n + 112) {
+        background-color: yellow;
+    }
+    .element:nth-child(n + 1):nth-child(-n + 4),
+    .element:nth-child(n + 11):nth-child(-n + 12),
+    .element:nth-child(n + 19):nth-child(-n + 20),
+    .element:nth-child(n + 37):nth-child(-n + 38),
+    .element:nth-child(n + 55):nth-child(-n + 56),
+    .element:nth-child(n + 87):nth-child(-n + 88) {
+        background-color: #f0cb58;
+    }
+    .element:nth-child(n + 5):nth-child(-n + 10),
+    .element:nth-child(n + 13):nth-child(-n + 18),
+    .element:nth-child(n + 31):nth-child(-n + 36),
+    .element:nth-child(n + 49):nth-child(-n + 54),
+    .element:nth-child(n + 81):nth-child(-n + 86),
+    .element:nth-child(n + 113):nth-child(-n + 118) {
+        background-color: #95cbce;
+    }
+
+}
+
+@media (min-width: 300px) and (max-width: 1400px),
+(min-width: 300px) and (max-aspect-ratio: 2/1) {
+    .periodic {
+        grid-template-columns: repeat(18, 1fr);
+    }
+
+    /* Лантаноиды */
+    .element:nth-child(n + 58):nth-child(-n + 71) {
+        grid-row: var(--lanthan-row);
+    }
+    .periodic::before {
+        content: 'Лантаноиды';
+        grid-row: var(--lanthan-label-row);
+        grid-column: 1/-1;
+        align-self: end;
+    }
+
+    /* Актиноиды */
+    .element:nth-child(n + 90):nth-child(-n + 103) {
+        grid-row: var(--actin-row);
+    }
+    .periodic::after {
+        content: 'Актиноиды';
+        grid-row: var(--actin-label-row);
+        grid-column: 1/-1;
+        align-self: end;
+    }
+
+}
+
+@media (max-width: 600px) {
+    .periodic {
+        grid-template-columns: repeat(8, 1fr);
+        grid-auto-columns: 1fr;
+        --lanthan-label-row: 12;
+        --lanthan-row: 13;
+        --actin-label-row: 15;
+        --actin-row: 16;
+    }
+
+    /* 15-й колонки с конца тут нет */
+    .element:nth-child(22),
+    .element:nth-child(40) {
+        grid-column: auto;
+    }
+
+    /* ставим в 1 колонку все элементы 1 группы по старой классификации
+     (главной и побочной подгрупп) */
+    .element:nth-child(3),
+    .element:nth-child(-18n + 29),
+    /* элементы 11 и 29 */
+    .element:nth-child(-18n + 37),
+    /* элементы 19, 37 и 1 (не помешает:) */
+    .element:nth-child(32n + 47),
+    /* элементы 47, 79 и 111 */
+    .element:nth-child(32n + 55) {
+        /* элементы 55, 87 и еще не открытый 119 */
+        grid-column: 1;
+    }
+
+    /* добавочные колонки для «не поместившихся» металлов (магия!) */
+    .periodic::before,
+    .periodic::after {
+        grid-column-end: 11;
+    }
+
+    .element:nth-child(n + 65):nth-child(-n + 71) {
+        grid-row: 14;
+    }
+
+    .element:nth-child(n + 97):nth-child(-n + 103) {
+        grid-row: 17;
+    }
+
+}
